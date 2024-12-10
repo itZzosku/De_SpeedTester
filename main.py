@@ -4,8 +4,9 @@ from influxdb_client import InfluxDBClient, Point, WriteOptions
 from datetime import datetime, timezone
 import os
 
-# Load configuration from config.json
-CONFIG_PATH = "config.json"
+# Dynamically determine the directory of the script
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+CONFIG_PATH = os.path.join(SCRIPT_DIR, "config.json")
 
 
 def load_config():
