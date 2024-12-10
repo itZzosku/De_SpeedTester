@@ -56,7 +56,7 @@ def write_to_influx(data):
         ping = data["ping"]
         download = data["download"]
         upload = data["upload"]
-        packet_loss = data.get("packetLoss", 0)
+        packet_loss = float(data.get("packetLoss", 0))  # Ensure packet_loss is always a float
         isp = data["isp"]
         interface = data["interface"]
         server = data["server"]
@@ -88,7 +88,7 @@ def write_to_influx(data):
             .field("upload_latency_high", upload["latency"]["high"])
             .field("upload_latency_jitter", upload["latency"]["jitter"])
             # Packet loss and ISP
-            .field("packet_loss", packet_loss)
+            .field("packet_loss", packet_loss)  # Consistently float
             .field("isp", isp)
             # Interface data
             .field("internal_ip", interface["internalIp"])
