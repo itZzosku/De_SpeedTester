@@ -6,10 +6,9 @@ import os
 import json
 import platform
 
-# Configure target, interval, and logging
+# Configure target and interval
 TARGET = "google.com"  # Target to ping
 INTERVAL = 1           # Interval between pings in seconds
-DURATION = 24 * 60 * 60  # Run for 1 day (in seconds)
 
 # Load InfluxDB configuration
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -34,24 +33,19 @@ def ping_target():
     try:
         # Determine the correct ping command based on the OS
         if platform.system() == "Windows":
-            # Windows: Use "-n" for count and "-w" for timeout (milliseconds)
             command = ["ping", "-n", "1", "-w", "1000", TARGET]
         else:
-            # Linux/macOS: Use "-c" for count and "-W" for timeout (seconds)
             command = ["ping", "-c", "1", "-W", "1", TARGET]
 
         # Execute ping command
         result = subprocess.run(command, capture_output=True, text=True)
-        print(f"Ping stdout: {result.stdout}")  # Debugging
-        print(f"Ping stderr: {result.stderr}")  # Debugging
 
+        # Parse response time from ping output
         if result.returncode == 0:
-            # Parse response time from ping output
             for line in result.stdout.split("\n"):
                 if "time=" in line:
-                    # Handle both Windows and Linux formats
                     time_part = line.split("time=")[-1].split(" ")[0]
-                    response_time = float(time_part.replace("ms", ""))  # Remove "ms" if present
+                    response_time = float(time_part.replace("ms", ""))
                     return True, response_time
         return False, None
     except Exception as e:
@@ -87,10 +81,8 @@ def write_to_influx(timestamp, success, response_time):
 
 def main():
     print(f"Starting ping to {TARGET}. Logging results to InfluxDB.")
-    start_time = time.time()
-
     try:
-        while (time.time() - start_time) < DURATION:
+        while True:  # Run indefinitely
             # Get current timestamp
             timestamp = datetime.now(timezone.utc)
 
