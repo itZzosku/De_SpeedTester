@@ -6,7 +6,7 @@ import os
 
 # Dynamically determine the directory of the script
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
-CONFIG_PATH = os.path.join(SCRIPT_DIR, "config.json")
+CONFIG_PATH = os.path.join(SCRIPT_DIR, "main_config.json")
 
 
 def load_config():

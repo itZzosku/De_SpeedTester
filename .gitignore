@@ -1,4 +1,5 @@
-config.json
+main_config.json
+pinger_config.json
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
