@@ -7,7 +7,7 @@ import json
 import platform
 
 # Configure target and interval
-TARGET = "google.com"  # Target to ping
+TARGET = "10.30.5.1"  # Target to ping
 INTERVAL = 1           # Interval between pings in seconds
 
 # Load InfluxDB configuration
